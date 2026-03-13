@@ -1,0 +1,13 @@
+# top-level file
+root = true
+
+[*]
+# General file settings
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.go]
+# Go-specific settings: use tabs for indentation
+indent_style = space
+indent_size = 2
