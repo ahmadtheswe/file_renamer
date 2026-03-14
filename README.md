@@ -25,6 +25,7 @@ go build -o file_renamer .
 | `--ext` | *(none)* | Filter files by extension (e.g. `.jpg`, `.txt`) |
 | `--prefix` | *(none)* | Prefix to prepend to renamed files |
 | `--v` | `false` | Verbose output — prints each rename operation |
+| `--help` | *(none)* | Show usage information |
 
 ## How it works
 
@@ -64,6 +65,18 @@ Renaming 'IMG002.jpg' to 'photo_2.jpg'
 Renaming 'IMG003.jpg' to 'photo_3.jpg'
 Renaming completed.
 ```
+
+## Contributing
+
+Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for details on branching workflow, code style, and commit message conventions.
+
+## Code of Conduct
+
+This project follows the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold these standards.
+
+## Changelog
+
+All notable changes are documented in the [Changelog](CHANGELOG.md).
 
 ## License
 
