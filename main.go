@@ -33,35 +33,25 @@ func main() {
 
 	fmt.Printf("Contents of directory '%s':\n", dirPath)
 
-	var filteredFiles []string
 	var checkedExtension = checkFileExtension(fileExtension)
-
-	for _, entry := range entries {
-		if entry.IsDir() {
-			continue
-		}
-
-		if filepath.Ext(entry.Name()) == checkedExtension {
-			filteredFiles = append(filteredFiles, entry.Name())
-		}
-
-		if checkedExtension == "" {
-			filteredFiles = append(filteredFiles, entry.Name())
-		}
-	}
-
+	var filteredFiles []string = filterFilesByExtensionAndPrefix(entries, checkedExtension, prefix)
 	totalFiles := len(filteredFiles)
 
 	if totalFiles == 0 {
-		if fileExtension != "" {
-			fmt.Printf("No files found\n")
+		if fileExtension != "" || prefix != "" {
+			fmt.Printf("No files found with extension '%s' or prefix '%s'\n", checkedExtension, prefix)
 		} else {
-			fmt.Printf("No files found with extension '%s'\n", fileExtension)
+			fmt.Printf("No files found\n")
 		}
 		return
 	}
 
-	fmt.Printf("Total files with extension '%s': %d\n", fileExtension, totalFiles)
+	correctedPrefixCount := countFileWithCorrectPrefix(entries, prefix)
+	if correctedPrefixCount > 0 {
+		fmt.Printf("Warning: %d files already have the prefix '%s'.\n", correctedPrefixCount, prefix)
+	}
+
+	fmt.Printf("Total files with extension '%s' that will be renamed: %d\n", checkedExtension, totalFiles)
 	fmt.Print("Are you sure you want to rename these files? (y/n): ")
 	var response string
 	fmt.Scanln(&response)
@@ -71,7 +61,8 @@ func main() {
 	}
 
 	for i, file := range filteredFiles {
-		newFileName := prefix + "_" + addZeroPrefix(totalFiles, i+1) + checkedExtension
+		index := correctedPrefixCount + i + 1
+		newFileName := prefix + "_" + addZeroPrefix(totalFiles+correctedPrefixCount, index) + checkedExtension
 		if verbose {
 			fmt.Printf("Renaming '%s' to '%s'\n", file, newFileName)
 		}
@@ -104,4 +95,43 @@ func addZeroPrefix(totalFiles int, index int) string {
 	digits := len(fmt.Sprintf("%d", totalFiles))
 	format := fmt.Sprintf("%%0%dd", digits)
 	return fmt.Sprintf(format, index)
+}
+
+func filterFilesByExtensionAndPrefix(entries []os.DirEntry, extension string, prefix string) []string {
+	var filtered []string
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+
+		if filepath.Ext(entry.Name()) == extension {
+			filtered = append(filtered, entry.Name())
+		}
+
+		if extension == "" {
+			filtered = append(filtered, entry.Name())
+		}
+	}
+
+	// Remove files that already have the prefix
+	if prefix != "" {
+		result := filtered[:0]
+		for _, file := range filtered {
+			if !strings.HasPrefix(file, prefix) {
+				result = append(result, file)
+			}
+		}
+		filtered = result
+	}
+	return filtered
+}
+
+func countFileWithCorrectPrefix(files []os.DirEntry, prefix string) int {
+	count := 0
+	for _, file := range files {
+		if strings.HasPrefix(file.Name(), prefix) {
+			count++
+		}
+	}
+	return count
 }
