@@ -6,13 +6,13 @@ A simple CLI tool to bulk rename files in a directory by adding a numbered prefi
 
 ## Usage
 
-```
+```bash
 go run main.go [flags]
 ```
 
 Or build first:
 
-```
+```bash
 go build -o file_renamer .
 ./file_renamer [flags]
 ```
@@ -38,19 +38,19 @@ go build -o file_renamer .
 
 Rename all `.jpg` files in a folder with the prefix `photo`:
 
-```
+```bash
 go run main.go --dir C:\Users\me\Pictures --ext .jpg --prefix photo
 ```
 
 Same, with verbose output to see each rename:
 
-```
+```bash
 go run main.go --dir C:\Users\me\Pictures --ext .jpg --prefix photo --v
 ```
 
 Rename all files (no extension filter) in the current directory:
 
-```
+```bash
 go run main.go --prefix backup
 ```
 
@@ -64,6 +64,33 @@ Renaming 'IMG001.jpg' to 'photo_1.jpg'
 Renaming 'IMG002.jpg' to 'photo_2.jpg'
 Renaming 'IMG003.jpg' to 'photo_3.jpg'
 Renaming completed.
+```
+
+## Build and run with Go 1.20 or later:
+
+### Build and run:
+```bash
+go build -o file_renamer .
+./file_renamer --dir C:\path\to\directory --ext .txt --prefix myfile
+```
+
+### Run without building:
+```bash
+go run main.go --dir C:\path\to\directory --ext .txt --prefix myfile
+```
+
+### Makefile commands
+#### Build with Makefile
+```bash
+make build
+```
+#### Run with Makefile
+```bash
+make run
+```
+#### Clean build artifacts
+```bash
+make clean
 ```
 
 ## Contributing

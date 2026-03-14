@@ -23,3 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Bulk rename files in a directory by adding a numbered, zero-padded prefix.
 - Skips files that already carry the target prefix.
 - Confirmation prompt before any renaming is performed.
+
+## [0.1.0] - 2026-03-14
+- Update README with usage instructions and examples.
+- Add license badge and link to LICENSE file.
+- Add a note about the project being a simple CLI tool for bulk renaming files with a numbered prefix.
+- Add Makefile with build and run commands for convenience.
